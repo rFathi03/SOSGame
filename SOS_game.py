@@ -4,77 +4,33 @@ def check_sos(board, row, col, letter):
     global counter_play
     
     if letter == "s":
-        if board[row + 1][col + 1] == board[row + 1][col + 3] == "s" and board[row + 1][col + 2] == "o":
+        if (board[row + 1][col + 1] == board[row + 1][col + 3] == "s" and board[row + 1][col + 2] == "o") or \
+           (board[row + 1][col + 1] == board[row + 1][col - 1] == "s" and board[row + 1][col] == "o") or \
+           (board[row + 1][col + 1] == board[row + 3][col + 1] == "s" and board[row + 2][col + 1] == "o") or \
+           (board[row + 1][col + 1] == board[row - 1][col + 1] == "s" and board[row][col + 1] == "o") or \
+           (board[row + 1][col + 1] == board[row + 3][col + 3] == "s" and board[row + 2][col + 2] == "o") or \
+           (board[row + 1][col + 1] == board[row - 1][col - 1] == "s" and board[row][col] == "o"):
             if counter_play % 2 == 0:  # Check if it's the first player's turn
                 first_player_score += 1
                 counter_play += 1
+                return True
             else:
                 second_player_score += 1
                 counter_play += 1
-        elif board[row + 1][col + 1] == board[row + 1][col - 1] == "s" and board[row + 1][col] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
-        elif board[row + 1][col + 1] == board[row + 3][col + 1] == "s" and board[row + 2][col + 1] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
-        elif board[row + 1][col + 1] == board[row - 1][col + 1] == "s" and board[row][col + 1] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
-        elif board[row + 1][col + 1] == board[row + 3][col + 3] == "s" and board[row + 2][col + 2] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
-        elif board[row + 1][col + 1] == board[row - 1][col - 1] == "s" and board[row][col] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
+                return True
     elif letter == "o":
-        if board[row + 1][col] == board[row + 1][col + 2] == "s" and board[row + 1][col + 1] == "o":
-            if counter_play % 2 == 0:
+        if (board[row + 1][col] == board[row + 1][col + 2] == "s" and board[row + 1][col + 1] == "o") or \
+           (board[row][col + 1] == board[row + 2][col + 1] == "s" and board[row + 1][col + 1] == "o") or \
+           (board[row][col] == board[row + 2][col + 2] == "s" and board[row + 1][col + 1] == "o") or \
+           (board[row][col + 2] == board[row + 2][col] == "s" and board[row + 1][col + 1] == "o"):
+            if counter_play % 2 == 0:  # Check if it's the first player's turn
                 first_player_score += 1
                 counter_play += 1
+                return True
             else:
                 second_player_score += 1
                 counter_play += 1
-        elif board[row][col + 1] == board[row + 2][col + 1] == "s" and board[row + 1][col + 1] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
-        elif board[row][col] == board[row + 2][col + 2] == "s" and board[row + 1][col + 1] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
-        elif board[row][col + 2] == board[row + 2][col] == "s" and board[row + 1][col + 1] == "o":
-            if counter_play % 2 == 0:
-                first_player_score += 1
-                counter_play += 1
-            else:
-                second_player_score += 1
-                counter_play += 1
+                return True
     else:
         pass
 
@@ -89,9 +45,13 @@ def player_input(player_number):
     counter_board += 1
     board[row + 1][col + 1] = input_letter
     
-    check_sos(board, row, col, input_letter)
-    
-    counter_play += 1
+    if check_sos(board, row, col, input_letter):
+        if counter_play % 2 == 0:  # Check if it's the first player's turn
+            player_input("1")
+        else:
+            player_input("2")
+    else:
+        counter_play += 1
 
 def print_board(board):
     print("| " + board[2][2] + " | " + board[2][3] + " | " + board[2][4] + " | " + board[2][5] + " | ")
